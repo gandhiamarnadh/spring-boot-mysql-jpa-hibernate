@@ -20,6 +20,7 @@ import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import netgloo.repository.EmployeeRepository;
 /**
  * This class is used to access data for the Account entity.
  * Repository annotation allows the component scanning support to find and 
@@ -38,27 +39,27 @@ public class AccountDao {
   // PUBLIC METHODS
   // ------------------------
 	
-	private static final String ANNOTATION_METHOD = "annotationData";
-    private static final String ANNOTATION_FIELDS = "declaredAnnotations";
-    private static final String ANNOTATIONS = "annotations";
+//	private static final String ANNOTATION_METHOD = "annotationData";
+//    private static final String ANNOTATION_FIELDS = "declaredAnnotations";
+//    private static final String ANNOTATIONS = "annotations";
     
-	@SuppressWarnings("unchecked")
-    public static void alterAnnotationValueJDK8(Class<?> targetClass, Class<? extends Annotation> targetAnnotation, Annotation targetValue) {
-        try {
-            Method method = Class.class.getDeclaredMethod(ANNOTATION_METHOD, null);
-            method.setAccessible(true);
-
-            Object annotationData = method.invoke(targetClass);
-            
-            Field annotations = annotationData.getClass().getDeclaredField(ANNOTATIONS);
-            annotations.setAccessible(true);
-
-            Map<Class<? extends Annotation>, Annotation> map = (Map<Class<? extends Annotation>, Annotation>) annotations.get(annotationData);
-            map.put(targetAnnotation, targetValue);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+//	@SuppressWarnings("unchecked")
+//    public static void alterAnnotationValueJDK8(Class<?> targetClass, Class<? extends Annotation> targetAnnotation, Annotation targetValue) {
+//        try {
+//            Method method = Class.class.getDeclaredMethod(ANNOTATION_METHOD, null);
+//            method.setAccessible(true);
+//
+//            Object annotationData = method.invoke(targetClass);
+//            
+//            Field annotations = annotationData.getClass().getDeclaredField(ANNOTATIONS);
+//            annotations.setAccessible(true);
+//
+//            Map<Class<? extends Annotation>, Annotation> map = (Map<Class<? extends Annotation>, Annotation>) annotations.get(annotationData);
+//            map.put(targetAnnotation, targetValue);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
   
   /**
    * Return all the accounts stored in the database.
@@ -96,8 +97,8 @@ public class AccountDao {
 //	} catch (Exception e) {
 //		System.out.println("account dao error2"+ e.toString());
 //	}
-	  
-	  return entityManager.createQuery("from Account").getResultList();
+	  return repository.findAll();
+//	  return entityManager.createQuery("from Account").getResultList();
   }
   
   
@@ -113,5 +114,8 @@ public class AccountDao {
   
   @Autowired
   private DataSource dataSource;
+  
+  @Autowired
+  private EmployeeRepository repository;
   
 } // class AccountDao
